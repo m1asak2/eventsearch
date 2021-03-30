@@ -1,0 +1,20 @@
+version: "3"
+services:
+  event_back:
+    container_name: event_back
+    build:
+      context: ./event_back
+      dockerfile: Dockerfile
+    working_dir: "/usr/event_back"
+    volumes:
+      - ../event_back:/usr/event_back
+    environment:
+      TZ: Asia/Tokyo
+    networks:
+      - event-network
+    # restart: always
+    ports:
+      - 8000:8084
+networks:
+  event-network:
+    external: true

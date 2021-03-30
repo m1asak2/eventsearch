@@ -1,0 +1,15 @@
+{
+	"name": "event_front",
+	"dockerComposeFile": [
+		"docker-compose.yml"
+	],
+	"service": "event_front",
+	"workspaceFolder": "/usr/event_front",
+	"settings": {},
+	"extensions": [
+		"msjsdiag.debugger-for-chrome",
+		"octref.vetur",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+	]
+}

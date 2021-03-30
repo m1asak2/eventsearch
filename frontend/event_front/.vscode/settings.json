@@ -1,0 +1,8 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2
+}

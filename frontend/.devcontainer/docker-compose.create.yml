@@ -1,0 +1,23 @@
+version: "3"
+services:
+  event_front:
+    build:
+      context: ./event_front
+      dockerfile: Dockerfile.create
+    working_dir: "/usr/event_front"
+    volumes:
+      - ../event_front:/usr/event_front
+    environment:
+      TZ: Asia/Tokyo
+      LANG: C.UTF-8
+      # HOST: 0.0.0.0
+      CHOKIDAR_USEPOLLING: 1
+    tty: true
+    stdin_open: true
+    networks:
+      - event-network
+    # ports:
+    #   - 8082:8000
+networks:
+  event-network:
+    # external: true
