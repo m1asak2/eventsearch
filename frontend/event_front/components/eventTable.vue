@@ -1,22 +1,28 @@
 <template>
   <div>
-    <table class="table">
+    <template v-if="items.length > 0">
+      <h4 class="eventHeader">イベントHit : {{ items.length }}件</h4>
+    </template>
+    <template v-else>
+      <h4 class="eventHeader">
+        イベントは見つかりませんでした
+      </h4>
+    </template>
+    <table class="SimpleTable">
       <thead>
-        <tr>
-          <template>
-            <th v-for="field in header" :key="field" class="th">{{ field }}</th>
-          </template>
-        </tr>
+        <!-- <tr>
+          <th v-for="field in header" :key="field">{{ field }}</th>
+        </tr> -->
       </thead>
       <tbody>
         <tr v-for="item in items" :key="item">
           <td>
             {{ item.day }}
-            <p style="font-size: 50px">{{ item.time }}</p>
+            <p style="font-size: 40px">{{ item.time }}</p>
           </td>
-          <td><img class="img" :src="item.img" alt="Image" /></td>
-          <td>
-            <a :href="item.link" target="_blank" class="link">{{ item.title }}</a></td>
+          <td><img :src="item.img" alt="Image" /></td>
+          <td style="font-size: 18px">
+            <a :href="item.link" target="_blank">{{ item.title }}</a>
           </td>
           <td>{{ item.address }}</td>
           <td>{{ item.group }}</td>
@@ -28,13 +34,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-interface GetForm {
-  keyword: string
-  address: string
-  count: number
-  start_from: string
-  start_to: string
-}
+
 export default Vue.extend({
   props: {
     header: {
@@ -72,23 +72,9 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-.th {
-  font-size: 15px;
-  /* background-color: rgb(218, 214, 214); */
-}
-.td {
-  font-size: 20px;
-}
-.table {
-  margin: 10px auto;
-  padding: 10px auto;
-}
-.img{
-  width: 8rem;
-  
-}
-.link{
-  color: black;
-  border-bottom: 1px solid black;
+.eventHeader {
+  background-color: rgb(231, 229, 229);
+  width: 100%;
+  margin: 0 5px 5px 5px;
 }
 </style>

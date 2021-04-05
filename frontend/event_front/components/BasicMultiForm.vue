@@ -1,8 +1,8 @@
 <template>
-  <b-container>
-    <b-form>
+  <b-container style="min-height: 10vh; width:100%">
+    <b-form style="width:70%">
       <b-row v-for="(item, index) in items" :key="index" class="my-1">
-        <b-col :sm="labelWidth">
+        <b-col :sm="labelWidth" style="text-align: right">
           <label :for="item.key">{{ item.label }}</label>
         </b-col>
         <b-col :sm="formWidth">
@@ -15,7 +15,7 @@
               />{{ choice.label }}
             </b-col>
           </b-row>
-          <template v-else>
+          <b-row v-else>
             <b-form-input
               :id="item.key"
               v-model="form[item.key]"
@@ -23,7 +23,7 @@
               :max="item.max"
               :min="item.min"
             />
-          </template>
+          </b-row>
         </b-col>
       </b-row>
       <b-button v-if="true" type="button" variant @click="onReset">{{
@@ -77,11 +77,11 @@ export default Vue.extend({
     },
     labelWidth: {
       type: String,
-      default: '3'
+      default: '4'
     },
     formWidth: {
       type: String,
-      default: '9'
+      default: '8'
     },
     isPush: {
       type: Boolean,

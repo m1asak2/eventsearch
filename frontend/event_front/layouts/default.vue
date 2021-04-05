@@ -6,15 +6,8 @@
 
 <style>
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -58,5 +51,34 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.SimpleTable {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 95%;
+  margin: 10px;
+}
+
+.SimpleTable tr {
+  border-bottom: solid 1px rgb(211, 209, 209);
+  /* max-width: 50px; */
+}
+
+.SimpleTable th,
+.SimpleTable td {
+  text-align: left;
+  font-weight: normal;
+  padding: 3px;
+  max-width: 400px;
+  /* max-height: 10px; */
+}
+/*td下階層にあるimg */
+.SimpleTable td > img {
+  width: 5rem;
+}
+.SimpleTable a {
+  color: black;
+  border-bottom: 1px solid black;
 }
 </style>
