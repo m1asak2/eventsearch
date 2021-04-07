@@ -14,7 +14,7 @@ services:
       - event-network
     # restart: always
     ports:
-      - 8000:8084
+      - 8002:8084
 networks:
   event-network:
     external: true
