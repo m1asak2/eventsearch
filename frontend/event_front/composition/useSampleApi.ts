@@ -1,7 +1,7 @@
 import { toRefs, reactive } from '@nuxtjs/composition-api'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import useApi from '~/composition/useApi'
-interface eventData {
+type eventData = {
   day: string
   time: string
   title: string
@@ -10,22 +10,23 @@ interface eventData {
   group: string
   link: string
 }
-interface GetForm {
+type GetForm = {
   keyword: string
   address: string
-  count: number
+  limit: number
   // eslint-disable-next-line camelcase
   start_from: string
   // eslint-disable-next-line camelcase
   start_to: string
 }
+type baseState = {
+  response: eventData[]
+  error: Error | null
+  isLoading: boolean
+}
 
 export default (axios: NuxtAxiosInstance) => {
-  const sampleState = reactive<{
-    response: eventData[]
-    error: Error | null
-    isLoading: boolean
-  }>({
+  const sampleState = reactive<baseState>({
     response: [],
     error: null,
     isLoading: false

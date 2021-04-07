@@ -8,7 +8,7 @@
         イベントは見つかりませんでした
       </h4>
     </template>
-    <table class="SimpleTable">
+    <table>
       <thead>
         <!-- <tr>
           <th v-for="field in header" :key="field">{{ field }}</th>
@@ -18,10 +18,10 @@
         <tr v-for="item in items" :key="item">
           <td>
             {{ item.day }}
-            <p style="font-size: 40px">{{ item.time }}</p>
+            <p class="time">{{ item.time }}</p>
           </td>
           <td><img :src="item.img" alt="Image" /></td>
-          <td style="font-size: 18px">
+          <td class="title">
             <a :href="item.link" target="_blank">{{ item.title }}</a>
           </td>
           <td>{{ item.address }}</td>
@@ -33,9 +33,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({
+import { defineComponent } from '@nuxtjs/composition-api'
+export default defineComponent({
   props: {
     header: {
       type: Array,
@@ -76,5 +75,11 @@ export default Vue.extend({
   background-color: rgb(231, 229, 229);
   width: 100%;
   margin: 0 5px 5px 5px;
+}
+.time {
+  font-size: 40px;
+}
+.title {
+  font-size: 18px;
 }
 </style>

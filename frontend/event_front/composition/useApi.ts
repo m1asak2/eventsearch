@@ -1,15 +1,16 @@
 import { reactive, toRefs } from '@vue/composition-api'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
-interface SendForm {
+import Vue from 'vue'
+type SendForm = {
   keyword: string[]
   address: string[]
-  count: number
+  limit: number
   // eslint-disable-next-line camelcase
   start_from: string
   // eslint-disable-next-line camelcase
   start_to: string
 }
-interface eventData {
+type eventData = {
   day: string
   time: string
   title: string
@@ -23,10 +24,10 @@ type baseState = {
   otherError: Error | null
   isLoading: boolean
 }
-interface GetForm {
+type GetForm = {
   keyword: string
   address: string
-  count: number
+  limit: number
   // eslint-disable-next-line camelcase
   start_from: string
   // eslint-disable-next-line camelcase
@@ -64,7 +65,7 @@ export default ($axios: NuxtAxiosInstance, url: string) => {
       address: data.address.split(' '),
       start_from: data.start_from,
       start_to: data.start_to,
-      count: data.count
+      limit: data.limit
     }
     const res = await $axios.post(url, convertedData).catch(error => {
       return error.res

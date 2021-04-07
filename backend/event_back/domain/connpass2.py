@@ -74,9 +74,9 @@ class Connpass(SearchBase):
         keyword = f"?q={data.keyword[0]}" + r"+" + \
             "+".join([f"{value}" for value in data.keyword[1:]])
         url = f"{self.__domain}{keyword}{start}{end}{address}"
-        return url, data.count
+        return url, data.limit
 
-    def get(self, url, count=100):
+    def get(self, url, limit=100):
         # events = requests.get(url).json()["events"]
         # events = requests.get(
         #     "https://connpass.com/api/v1/event/?keyword=python&keyword_or=osaka,=online&order=1").json()["events"]
@@ -93,7 +93,7 @@ class Connpass(SearchBase):
         tablelist: List[EventTable] = []
         while(True):
             events = soup.select(".event_list")
-            for i, event in enumerate(events):
+            for event in events:
                 # 両端の改行、タブ、空白を削除
                 schedule_area = event.select_one('.event_schedule_area')
                 event_detail_area = event.select_one('.event_detail_area')
@@ -111,7 +111,7 @@ class Connpass(SearchBase):
                 link = event_detail_area.select_one(".event_title").a.get("href")
                 tablelist.append(EventTable(
                     address=address, title=title, day=day, time=time, group=group, img=img, link=link))
-                if i + 1 >= count:
+                if len(tablelist) >= limit:
                     return tablelist
             if len(soup.select(".to_next")) > 0:
                 next_page = soup.select_one(".to_next").a.get("href")
@@ -128,7 +128,7 @@ class Connpass(SearchBase):
 #     "start_from": '2019-11-03',
 #     "start_to": '2021-11-03',
 #     "keyword": ["python", "api"],
-#     "count": 1
+#     "limit": 1
 # }
 # daddd = Event(**ev)
 # tmp = abc.convert(daddd)

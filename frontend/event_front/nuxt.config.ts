@@ -50,6 +50,7 @@ export default {
   },
   proxy: {
     '/api': {
+      // target: 'http://127.0.0.1:50447/api/v01',
       target: 'http://event_back:8084/api/v01',
       pathRewrite: { '^/api': '' }
     }

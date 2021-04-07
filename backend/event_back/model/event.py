@@ -10,7 +10,7 @@ class Event(BaseModel):
     address: List[str]
     start_from: str
     start_to: str
-    count: int
+    limit: int
 
 
 class EventTable(BaseModel):

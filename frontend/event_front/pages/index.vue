@@ -35,12 +35,12 @@
 
 <script lang="ts">
 // import Vue from 'vue'
-import { defineComponent } from '@vue/composition-api'
-import BasicMultiForm from '@/components/BasicMultiForm.vue'
+import { defineComponent } from '@nuxtjs/composition-api'
+import BasicMultiForm from '@/components/searchForm.vue'
 import card from '@/components/eventTable.vue'
 import useSampleApi from '~/composition/useSampleApi'
 
-interface fields {
+type iField = {
   label: string
   key: string
   type: string
@@ -51,12 +51,12 @@ export default defineComponent({
   components: { BasicMultiForm, card },
 
   setup(_props, { root }) {
-    const fields = [
+    const fields: iField[] = [
       { label: 'キーワード', key: 'keyword', type: 'text' },
       { label: '開催地', key: 'address', type: 'text' },
       { label: 'From', key: 'start_from', type: 'date' },
       { label: 'To', key: 'start_to', type: 'date' },
-      { label: '取得イベント数', key: 'count', type: 'number', min: 0 }
+      { label: '取得イベント数', key: 'limit', type: 'number', min: 0 }
       // { label: '並び順', key: 'aiu', type: 'number', min: 0, max: 1 }
     ]
     const { $axios } = root

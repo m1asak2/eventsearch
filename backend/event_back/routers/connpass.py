@@ -9,5 +9,5 @@ apipath = "/api/v01"
 @router.post(f"{apipath}/connpass")
 def get_connpass(data: Event):
     com = Connpass()
-    url, count = com.convert(data)
-    return com.get(url, count)
+    url, limit = com.convert(data)
+    return com.get(url, limit)
