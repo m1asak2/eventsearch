@@ -1,40 +1,40 @@
 <template>
-  <div class="container">
-    <form action="" class="row">
-      <div class="col-sm-8 offset-sm-2">
-        <div class="form-group">
-          <label for="keyword">キーワード</label>
+  <div class="wrapper">
+    <form action="">
+      <div class="form-group">
+        <label for="keyword">キーワード</label>
+        <input required type="text" placeholder="AND検索" style="width :100%" />
+      </div>
+      <div class="form-group">
+        <label class="d-block">開催日</label>
+        <div class="form-check-inline" style="width:100%">
           <input
-            required
-            type="text"
-            placeholder="AND検索"
+            type="date"
+            name="start_from"
+            id="id_start_from"
+            class="form-control"
+            value="2021-04-06"
+            style="width :100%"
+          />
+          〜
+          <input
+            type="date"
+            name="start_to"
+            id="id_start_to"
+            class="form-control"
+            value="2021-10-06"
             style="width :100%"
           />
         </div>
-        <div class="form-group">
-          <label class="d-block">開催日</label>
-          <div class="form-check-inline">
-            <input
-              type="date"
-              name="start_from"
-              id="id_start_from"
-              class="form-control"
-              value="2021-04-06"
-            />
-            〜
-            <input
-              type="date"
-              name="start_to"
-              id="id_start_to"
-              class="form-control"
-              value="2021-10-06"
-            />
-          </div>
+      </div>
+      <div class="form-check-inline" style="width:100%">
+        <div class="form-group" style="width:50%">
+          <label for="">開催地</label>
+          <input type="text" style="width:95%" />
         </div>
-        <div class="form-group">開催地</div>
-        <div class="form-group">
+        <div class="form-group" style="width:50%">
           <label for="limit">取得イベント数</label>
-          <select name="limit" id="limit" class="form-control">
+          <select id="limit" name="limit" class="form-control">
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
@@ -42,6 +42,9 @@
           </select>
         </div>
       </div>
+      <button type="submit" class="btn btn-primary" style=" width:100%">
+        検索
+      </button>
     </form>
   </div>
 </template>
@@ -117,7 +120,16 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-.form-group > label {
+label {
   font-weight: bold;
+}
+.form-group {
+  text-align: left;
+  width: 100%;
+}
+.wrapper {
+  /* width: 80%; */
+  grid-template-rows: 50px 200px;
+  grid-template-columns: 1fr 2fr;
 }
 </style>
