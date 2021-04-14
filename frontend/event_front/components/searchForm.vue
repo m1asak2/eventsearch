@@ -1,9 +1,15 @@
 <template>
-  <div class="wrapper">
+  <div class="container">
     <form action="">
       <div class="form-group">
         <label for="keyword">キーワード</label>
-        <input required type="text" placeholder="AND検索" style="width :100%" />
+        <input
+          v-model="key"
+          required
+          type="text"
+          placeholder="AND検索"
+          style="width :100%"
+        />
       </div>
       <div class="form-group">
         <label class="d-block">開催日</label>
@@ -42,7 +48,12 @@
           </select>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" style=" width:100%">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style=" width:100%"
+        @click="onSubmit"
+      >
         検索
       </button>
     </form>
@@ -50,8 +61,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+import { defineComponent } from '@nuxtjs/composition-api'
+type SendForm = {
+  keyword: string[]
+  address: string[]
+  limit: number
+  // eslint-disable-next-line camelcase
+  start_from: string
+  // eslint-disable-next-line camelcase
+  start_to: string
+}
+export default defineComponent({
   props: {
     items: {
       type: Array,
@@ -89,18 +109,31 @@ export default Vue.extend({
       default: false
     }
   },
-  data() {
+  setup(props) {
+    let form: SendForm = {
+      keyword: [''],
+      address: [''],
+      limit: 10,
+      // eslint-disable-next-line camelcase
+      start_from: '',
+      // eslint-disable-next-line camelcase
+      start_to: ''
+    }
+
+    let key: String = ''
+    let address: String = ''
+    let show: boolean = false
     return {
-      form: {},
-      show: false
+      form,
+      show
     }
   },
   methods: {
     onSubmit(evt: Event) {
+      console.log('show form')
+      console.log(this.form)
       evt.preventDefault()
-      this.$emit('decide', this.form)
-      // console.log('show form')
-      // console.log(this.form)
+      // this.$emit('decide', this.form)
     },
     onReset(evt: Event) {
       evt.preventDefault()
@@ -114,7 +147,13 @@ export default Vue.extend({
       // for (const k of Object.keys(this.form)) {
       //   this.form[k] = {}
       // }
-      this.form = {}
+      this.form = {
+        keyword: [''],
+        address: [''],
+        limit: 0,
+        start_from: '',
+        start_to: ''
+      }
     }
   }
 })
