@@ -24,6 +24,13 @@ html {
   margin: 0;
 }
 
+h1 {
+  text-align: center;
+  padding: 10px;
+}
+h2 {
+  text-align: center;
+}
 .button--green {
   display: inline-block;
   border-radius: 4px;

@@ -1,26 +1,10 @@
 import { toRefs, reactive } from '@nuxtjs/composition-api'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
-import useApi from '~/composition/useApi'
-type eventData = {
-  day: string
-  time: string
-  title: string
-  address: string
-  img: string
-  group: string
-  link: string
-}
-type GetForm = {
-  keyword: string
-  address: string
-  limit: number
-  // eslint-disable-next-line camelcase
-  start_from: string
-  // eslint-disable-next-line camelcase
-  start_to: string
-}
+import { EventData, DisplayForm } from '@/types/interfaces'
+import useApi from '@/composition/useApi'
+
 type baseState = {
-  response: eventData[]
+  response: EventData[]
   error: Error | null
   isLoading: boolean
 }
@@ -31,10 +15,9 @@ export default (axios: NuxtAxiosInstance) => {
     error: null,
     isLoading: false
   })
-  const apiPostTrigger = async (data: GetForm) => {
+  const apiPostTrigger = async (data: DisplayForm) => {
     const { response, otherError, isLoading, postData } = useApi(
       axios,
-      // 'http://192.168.56.1:8000/api/v01/connpass'
       '/api/connpass'
     )
     sampleState.isLoading = isLoading as any

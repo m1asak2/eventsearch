@@ -2,9 +2,24 @@
   <div>
     <div>
       <!-- <Logo /> -->
-      <h1 style="text-align: center; padding:10px">イベント横断サーチ</h1>
-      <basic-multi-form :items="fields" @decide="apiPostTrigger">
-      </basic-multi-form>
+      <h1>イベント横断サーチ</h1>
+      <h2>保存済み検索条件</h2>
+      <div style="display:flex">
+        <event-card
+          v-for="(item, index) in state.savedItem"
+          :key="index"
+          :items="item"
+          style="margin:1em 0 1em 1em"
+          @set="setCondition(index)"
+          @delete="deleteCondition(index)"
+        ></event-card>
+      </div>
+      <search-form
+        :items="state.displayItem"
+        @search="apiPostTrigger"
+        @save="SaveCondition"
+      >
+      </search-form>
       <!-- <h1 class="title">
         event_front
       </h1> -->
@@ -12,60 +27,91 @@
     <div>
       <card :items="response"></card>
     </div>
-    <div class="links">
-      <a
-        href="https://nuxtjs.org/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button--green"
-      >
-        Documentation
-      </a>
-      <a
-        href="https://github.com/nuxt/nuxt.js"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button--grey"
-      >
-        GitHub
-      </a>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
 // import Vue from 'vue'
-import { defineComponent } from '@nuxtjs/composition-api'
-import BasicMultiForm from '@/components/searchForm.vue'
+import {
+  defineComponent,
+  // computed,
+  reactive,
+  onMounted,
+  onBeforeMount
+} from '@nuxtjs/composition-api'
+import SearchForm from '@/components/searchForm.vue'
+import { DisplayForm } from '@/types/interfaces'
 import card from '@/components/eventTable.vue'
+import EventCard from '@/components/EventCard.vue'
 import useSampleApi from '~/composition/useSampleApi'
 
-type iField = {
-  label: string
-  key: string
-  type: string
-  min?: number
-  max?: number
+class EventItems {
+  savedItem: DisplayForm[] = []
+  displayItem: DisplayForm = {
+    keyword: '',
+    address: '',
+    limit: 0,
+    start_from: '',
+    start_to: '',
+    target: []
+  }
 }
 export default defineComponent({
-  components: { BasicMultiForm, card },
+  components: { SearchForm, card, EventCard },
 
   setup(_props, { root }) {
-    const fields: iField[] = [
-      { label: 'キーワード', key: 'keyword', type: 'text' },
-      { label: '開催地', key: 'address', type: 'text' },
-      { label: 'From', key: 'start_from', type: 'date' },
-      { label: 'To', key: 'start_to', type: 'date' },
-      { label: '取得イベント数', key: 'limit', type: 'number', min: 0 }
-      // { label: '並び順', key: 'aiu', type: 'number', min: 0, max: 1 }
-    ]
     const { $axios } = root
     const { response, isLoading, apiPostTrigger } = useSampleApi($axios)
+    const state = reactive(new EventItems())
+    const SetItems = () => {
+      state.savedItem.push({
+        keyword: 'javascript java',
+        address: 'online',
+        limit: 10,
+        start_from: '2021-05-21',
+        start_to: '2021-10-30',
+        target: ['connpass', 'doorkeeper']
+      })
+      state.savedItem.push({
+        keyword: 'flutter dart',
+        address: 'osaka',
+        limit: 50,
+        start_from: '2020-05-21',
+        start_to: '2030-10-30',
+        target: ['connpass']
+      })
+      state.savedItem.push({
+        keyword: 'vue.js nuxt',
+        address: 'tokyo',
+        limit: 20,
+        start_from: '2000-05-21',
+        start_to: '2001-10-30',
+        target: ['doorkeeper']
+      })
+    }
+    const setCondition = (i: number) => {
+      state.displayItem = state.savedItem[i]
+    }
+    const deleteCondition = (i: number) => {
+      state.savedItem.splice(i, 1)
+    }
+    const created = onBeforeMount(() => {
+      SetItems()
+    })
+    const SaveCondition = (evt: DisplayForm) => {
+      state.savedItem.push(Object.assign({}, evt))
+    }
     return {
+      state,
+      onMounted,
       isLoading,
       response,
       apiPostTrigger,
-      fields
+      SetItems,
+      setCondition,
+      created,
+      SaveCondition,
+      deleteCondition
     }
   }
 })

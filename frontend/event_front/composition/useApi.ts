@@ -1,37 +1,11 @@
 import { reactive, toRefs } from '@vue/composition-api'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
-import Vue from 'vue'
-type SendForm = {
-  keyword: string[]
-  address: string[]
-  limit: number
-  // eslint-disable-next-line camelcase
-  start_from: string
-  // eslint-disable-next-line camelcase
-  start_to: string
-}
-type eventData = {
-  day: string
-  time: string
-  title: string
-  address: string
-  img: string
-  group: string
-  link: string
-}
+import { EventData, SendForms, DisplayForm } from '@/types/interfaces'
+import { ToSendForm } from '@/composition/ToSendForm'
 type baseState = {
-  response: eventData[]
+  response: EventData[]
   otherError: Error | null
   isLoading: boolean
-}
-type GetForm = {
-  keyword: string
-  address: string
-  limit: number
-  // eslint-disable-next-line camelcase
-  start_from: string
-  // eslint-disable-next-line camelcase
-  start_to: string
 }
 // 各型は参考まで
 type Options = {
@@ -42,7 +16,7 @@ type Options = {
     'Content-Type'?: string
   }
 }
-export default ($axios: NuxtAxiosInstance, url: string) => {
+export default (axios: NuxtAxiosInstance, url: string) => {
   const state = reactive<baseState>({
     response: [
       {
@@ -59,15 +33,9 @@ export default ($axios: NuxtAxiosInstance, url: string) => {
     otherError: null,
     isLoading: false
   })
-  const postData = async (data: GetForm) => {
-    const convertedData: SendForm = {
-      keyword: data.keyword.split(' '),
-      address: data.address.split(' '),
-      start_from: data.start_from,
-      start_to: data.start_to,
-      limit: data.limit
-    }
-    const res = await $axios.post(url, convertedData).catch(error => {
+  const postData = async (data: DisplayForm) => {
+    const convertedData = ToSendForm(data)
+    const res = await axios.post(url, convertedData).catch(error => {
       return error.res
     })
     state.response = res.data

@@ -2,61 +2,18 @@ import os
 import requests
 import datetime
 from dateutil.relativedelta import relativedelta
-from abc import ABCMeta, abstractmethod
+
 from bs4 import BeautifulSoup
 from typing import List
 from model.event import Event, EventTable
 from model.bases import Bases
+from domain.searchbase import SearchBase
 domain = "https://connpass.com/api/v1/event/"
 key = "python"
 keyword = f"?keyword={key}"
 
 
 search = f"{domain}{keyword}"
-
-
-class SearchBase(metaclass=ABCMeta):
-    def __init_value(self):
-        pass
-
-    @abstractmethod
-    def convert(self, data: Bases):
-        '''
-        取得先に合わせて型変換
-        '''
-        pass
-
-    @abstractmethod
-    def get(self, url):
-        pass
-
-    def get_event(self, data: Bases):
-        self.__init_value()
-        url = self.convert(data)
-        print(url)
-        tmp = self.get(url)
-        return self.terminate(tmp)
-
-    # @abstractmethod
-    def terminate(self, data):
-        return data
-
-    def day(self, month=None):
-        res = datetime.date.today()
-        if month:
-            res += relativedelta(months=month)
-        return res.strftime('%Y%m%d')
-
-    def set_key(self, dic: dict, key: str, head: str, default=""):
-        default = default if default == "" else f"{head}{default}"
-        return f"{head}{dic[key]}" if key in dic else default
-
-    def set_set(self, data, head: str, default: ""):
-        default = default if default == "" else f"{head}{default}"
-        if data is List[str]:
-            return [f"{head}{value}" for value in data]
-        else:
-            return f"{head}{data}"
 
 
 class Connpass(SearchBase):
@@ -133,28 +90,6 @@ class Connpass(SearchBase):
 # daddd = Event(**ev)
 # tmp = abc.convert(daddd)
 # abc.get(tmp)
-
-
-class Doorkeeper(SearchBase):
-    def __init__(self):
-        self.__domain = "http://api.doorkeeper.jp/events/"
-
-    def convert(self, dic: dict):
-        address = self.set_key(dic, 'address', "&prefecture_id=")
-        start = self.set_key(dic, 'start', "&since=", self.day())
-        keyword = f"?q={dic['key']}" if dic["key"] != "" else ""
-        url = self.__domain
-        if keyword != "":
-            url += f"{keyword}{address}{start}"
-        print(url)
-        return url
-
-    def get(self, url):
-        events = requests.get(url).json()
-        print(type(events))
-        # print(events)
-        for dic in events:
-            print(dic["event"]["title"])
 
 
 class Factory:

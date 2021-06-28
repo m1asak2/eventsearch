@@ -33,7 +33,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { EventData } from '@/types/interfaces'
 export default defineComponent({
   props: {
     header: {
@@ -41,7 +42,7 @@ export default defineComponent({
       default: () => ['date', 'cover', 'title', 'address', 'group']
     },
     items: {
-      type: Array,
+      type: Array as PropType<EventData[]>,
       default: () => [
         {
           day: '2020/10/02',
