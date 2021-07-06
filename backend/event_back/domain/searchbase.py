@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from model.bases import Bases
 class SearchBase(metaclass=ABCMeta):
     def __init_value(self):
         pass
