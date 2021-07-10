@@ -1,7 +1,7 @@
 import { reactive, toRefs } from '@vue/composition-api'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
-import { EventData, SendForms, DisplayForm } from '@/types/interfaces'
-import { ToSendForm } from '@/composition/ToSendForm'
+import { EventData, DisplayForm } from '@/types/interfaces'
+import { DisplayToSendForm } from '~/composition/ConvertForm'
 type baseState = {
   response: EventData[]
   otherError: Error | null
@@ -34,7 +34,7 @@ export default (axios: NuxtAxiosInstance, url: string) => {
     isLoading: false
   })
   const postData = async (data: DisplayForm) => {
-    const convertedData = ToSendForm(data)
+    const convertedData = DisplayToSendForm(data)
     const res = await axios.post(url, convertedData).catch(error => {
       return error.res
     })

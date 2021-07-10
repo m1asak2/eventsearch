@@ -26,6 +26,13 @@ export type DisplayForm = {
   // eslint-disable-next-line camelcase
   start_from: string
   // eslint-disable-next-line camelcase
-  start_to: string
+  period: string
+  target: string[]
+}
+export type SaveForm = {
+  keyword: string
+  address: string
+  limit: number
+  period: string
   target: string[]
 }

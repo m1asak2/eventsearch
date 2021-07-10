@@ -12,7 +12,7 @@
         />
       </div>
       <div class="form-group">
-        <label class="d-block">開催日</label>
+        <label class="d-block">期間</label>
         <div class="form-check-inline" style="width:100%">
           <input
             id="id_start_from"
@@ -20,19 +20,26 @@
             type="date"
             name="start_from"
             class="form-control"
-            style="width :100%"
           />
-          〜
-          <input
-            id="id_start_to"
-            v-model="state.displayitem.start_to"
-            type="date"
-            name="start_to"
+          <span style="min-width :40px">から</span>
+          <label for="period"></label>
+          <select
+            id="period"
+            v-model="state.displayitem.period"
+            name="period"
             class="form-control"
-            style="width :100%"
-          />
+          >
+            <option value="0">当日</option>
+            <option value="10">10日先まで</option>
+            <option value="20">20日先まで</option>
+            <option value="30">30日先まで</option>
+            <option value="60">60日先まで</option>
+            <option value="90">90日先まで</option>
+          </select>
+          <!-- <span style="min-width :50px"></span> -->
         </div>
       </div>
+
       <div class="form-check-inline" style="width:100%">
         <div class="form-group" style="width:50%">
           <label for="">開催地</label>
@@ -121,17 +128,17 @@ export default defineComponent({
         address: 'online osaka',
         limit: 10,
         start_from: '',
-        start_to: '',
+        period: '',
         target: ['connpass', 'doorkeeper', 'techplay']
       }
     })
     state.displayitem.start_from = getDate()
-    state.displayitem.start_to = getDate(3)
+    state.displayitem.period = '30'
     const Clear = () => {
       state.displayitem.keyword = ''
       state.displayitem.address = ''
       state.displayitem.start_from = getDate()
-      state.displayitem.start_to = getDate(3)
+      state.displayitem.period = '30'
       state.targets = []
     }
     const onSubmit = (evt: Event) => {
@@ -152,7 +159,7 @@ export default defineComponent({
     const localprop: DisplayForm = {
       keyword: props.items.keyword,
       address: props.items.address,
-      start_to: props.items.start_to,
+      period: props.items.period,
       start_from: props.items.start_from,
       target: props.items.target,
       limit: props.items.limit
@@ -161,7 +168,7 @@ export default defineComponent({
       state.displayitem.keyword = props.items.keyword
       state.displayitem.address = props.items.address
       state.displayitem.start_from = props.items.start_from
-      state.displayitem.start_to = props.items.start_to
+      state.displayitem.period = props.items.period
       state.targets = props.items.target
       state.displayitem.limit = props.items.limit
     })
@@ -192,5 +199,14 @@ label {
 .flex-container {
   display: flex;
   justify-content: space-between;
+}
+.container {
+  max-width: 600px;
+
+  width: 80%;
+}
+.form-group {
+  width: 100%;
+  min-width: 150px;
 }
 </style>

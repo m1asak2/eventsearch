@@ -83,4 +83,8 @@ export default defineComponent({
 .title {
   font-size: 18px;
 }
+tr {
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
 </style>

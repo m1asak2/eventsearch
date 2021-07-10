@@ -40,19 +40,20 @@ import {
   onBeforeMount
 } from '@nuxtjs/composition-api'
 import SearchForm from '@/components/searchForm.vue'
-import { DisplayForm } from '@/types/interfaces'
+import { DisplayForm, SaveForm } from '@/types/interfaces'
 import card from '@/components/eventTable.vue'
 import EventCard from '@/components/EventCard.vue'
 import useSampleApi from '~/composition/useSampleApi'
+import { SaveToDisplayForm } from '~/composition/ConvertForm'
 
 class EventItems {
-  savedItem: DisplayForm[] = []
+  savedItem: SaveForm[] = []
   displayItem: DisplayForm = {
     keyword: '',
     address: '',
     limit: 0,
     start_from: '',
-    start_to: '',
+    period: '',
     target: []
   }
 }
@@ -68,29 +69,26 @@ export default defineComponent({
         keyword: 'javascript java',
         address: 'online',
         limit: 10,
-        start_from: '2021-05-21',
-        start_to: '2021-10-30',
+        period: '30',
         target: ['connpass', 'doorkeeper']
       })
       state.savedItem.push({
         keyword: 'flutter dart',
         address: 'osaka',
         limit: 50,
-        start_from: '2020-05-21',
-        start_to: '2030-10-30',
+        period: '10',
         target: ['connpass']
       })
       state.savedItem.push({
         keyword: 'vue.js nuxt',
         address: 'tokyo',
         limit: 20,
-        start_from: '2000-05-21',
-        start_to: '2001-10-30',
+        period: '20',
         target: ['doorkeeper']
       })
     }
     const setCondition = (i: number) => {
-      state.displayItem = state.savedItem[i]
+      state.displayItem = SaveToDisplayForm(state.savedItem[i])
     }
     const deleteCondition = (i: number) => {
       state.savedItem.splice(i, 1)

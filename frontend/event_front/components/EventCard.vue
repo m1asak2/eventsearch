@@ -7,9 +7,8 @@
       <!-- <a href="" class="card__link"></a> -->
     </div>
     <div>
-      <!-- <span class="date">開催日 : {{ items.start_from }}から</span> -->
-      <!-- <span class="date">{{ items.start_to }}</span> -->
-      <p class="target">表示数:{{ items.limit }}</p>
+      <span class="period">期間 : {{ items.period }}日先まで</span>
+      <p class="target">表示数:{{ items.limit }}件</p>
       <p class="target">{{ items.target }}</p>
     </div>
     <button class="btn btn-dark button-Btn" @click="setCondition">
@@ -22,12 +21,12 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { DisplayForm } from '@/types/interfaces'
+import { SaveForm } from '@/types/interfaces'
 // class SendForm<SendForms>
 export default defineComponent({
   props: {
     items: {
-      type: Object as PropType<DisplayForm>,
+      type: Object as PropType<SaveForm>,
       default: () => undefined
     }
   },
