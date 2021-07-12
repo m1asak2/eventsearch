@@ -11,6 +11,7 @@ class Event(BaseModel):
     start_from: str
     start_to: str
     limit: int
+    target: List[str]
 
 
 class EventTable(BaseModel):

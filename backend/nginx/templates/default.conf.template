@@ -42,7 +42,7 @@ server {
   location ~ ^/[^/]*\.(jpg|jpeg|png|gif|ico|woff|woff2|ttf)$ {
     root /usr/share/nginx/html/img;
   }
-  location /api/ {
+  location /api {
     proxy_redirect off;
     # proxy_http_version 1.1;
     # proxy_set_header Upgrade $http_upgrade;
@@ -51,7 +51,7 @@ server {
     # docker network bridgeを使う場合はコンテナ名でアクセス
     # hostならhost.docker.internalが使える？
     # host.docker.internalを使うと､アクセス先がLANになる
-    proxy_pass http://${FASTAPI}:8084/api/v01/;
+    proxy_pass http://${FASTAPI}:8084/api/v01/event;
   }
   #下記のページ間リンクはnginx管理外のポートなので機能しなさそう
   location /redoc/ {

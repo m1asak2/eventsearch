@@ -20,7 +20,7 @@
             {{ item.day }}
             <p class="time">{{ item.time }}</p>
           </td>
-          <td><img :src="item.img" alt="Image" /></td>
+          <td><img :src="item.img" alt="Image" style="max-width:108px" /></td>
           <td class="title">
             <a :href="item.link" target="_blank">{{ item.title }}</a>
           </td>

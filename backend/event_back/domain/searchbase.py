@@ -1,11 +1,17 @@
 from abc import ABCMeta, abstractmethod
-from model.bases import Bases
+from model.event import Event
+# from model.bases import Bases
+from typing import List
+import datetime
+from dateutil.relativedelta import relativedelta
+
+
 class SearchBase(metaclass=ABCMeta):
     def __init_value(self):
         pass
 
     @abstractmethod
-    def convert(self, data: Bases):
+    def convert(self, data: Event):
         '''
         取得先に合わせて型変換
         '''
@@ -15,11 +21,11 @@ class SearchBase(metaclass=ABCMeta):
     def get(self, url):
         pass
 
-    def get_event(self, data: Bases):
+    def get_event(self, data: Event):
         self.__init_value()
-        url = self.convert(data)
+        url, limit = self.convert(data)
         print(url)
-        tmp = self.get(url)
+        tmp = self.get(url, limit)
         return self.terminate(tmp)
 
     # @abstractmethod
@@ -42,4 +48,3 @@ class SearchBase(metaclass=ABCMeta):
             return [f"{head}{value}" for value in data]
         else:
             return f"{head}{data}"
-

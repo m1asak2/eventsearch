@@ -16,10 +16,7 @@ export default (axios: NuxtAxiosInstance) => {
     isLoading: false
   })
   const apiPostTrigger = async (data: DisplayForm) => {
-    const { response, otherError, isLoading, postData } = useApi(
-      axios,
-      '/api/connpass'
-    )
+    const { response, otherError, isLoading, postData } = useApi(axios, '/api')
     sampleState.isLoading = isLoading as any
     await postData(data)
     sampleState.response = response as any

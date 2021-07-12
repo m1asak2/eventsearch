@@ -1,11 +1,11 @@
 import os
 from fastapi import FastAPI
-from routers import connpass
+from routers import events
 from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
-app.include_router(connpass.router)
+app.include_router(events.router)
 origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
@@ -27,6 +27,18 @@ app.add_middleware(
 def read_root():
     return {"Hello": "World"}
 
+
+a = "2021-08-02（月）08:45-2021-10-29（金）18:00"
+#from pytz import timezone
+from datetime import datetime, timedelta, timezone
+JST = timezone(timedelta(hours=+9), 'JST')
+# utc_now = datetime.now(timezone('UTC'))
+tzutc = "2021-08-01T23:45:00.000Z"
+# dt_now = datetime.datetime.now()
+# print(dt_now)
+# dt_now_utc = datetime.datetime.now(datetime.timezone.utc)
+
+# print(dt_now_utc)
 
 "https://connpass.com/search/?q=python&start_from=2021/01/04&start_to=2021/07/04&prefectures=osaka&prefectures=online&selectItem=osaka&selectItem=online"
 
