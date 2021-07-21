@@ -1,6 +1,3 @@
-from typing import List, Optional
-from datetime import datetime
-from model.bases import Bases
 from typing import List
 from pydantic import BaseModel
 

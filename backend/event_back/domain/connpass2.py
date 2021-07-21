@@ -11,7 +11,7 @@ class Connpass(SearchBase):
         self.__domain = "https://connpass.com/search/"
 
     def convert(self, data: Event):
-        if data.address:
+        if data.address and data.address[0]:
             address = "&" + \
                 '&'.join([f"prefectures={value}" for value in data.address])
         else:
@@ -49,7 +49,7 @@ class Connpass(SearchBase):
                     '.image_link').select_one("img")['src']
                 link = event_detail_area.select_one(".event_title").a.get("href")
                 tablelist.append(EventTable(
-                    address=address, title=title, day=day, time=time, group=group, img=img, link=link))
+                    address=address, title=title, day=day.replace("/", "-"), time=time, group=group, img=img, link=link))
                 if len(tablelist) >= limit:
                     return tablelist
             if len(soup.select(".to_next")) > 0:

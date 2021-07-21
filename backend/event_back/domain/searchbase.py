@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from model.event import Event
+from model.event import Event, EventTable
 # from model.bases import Bases
 from typing import List
 import datetime
@@ -21,7 +21,7 @@ class SearchBase(metaclass=ABCMeta):
     def get(self, url):
         pass
 
-    def get_event(self, data: Event):
+    def get_event(self, data: Event)->List[EventTable]:
         self.__init_value()
         url, limit = self.convert(data)
         print(url)
@@ -29,7 +29,7 @@ class SearchBase(metaclass=ABCMeta):
         return self.terminate(tmp)
 
     # @abstractmethod
-    def terminate(self, data):
+    def terminate(self, data: List[EventTable]):
         return data
 
     def day(self, month=None):
@@ -42,7 +42,7 @@ class SearchBase(metaclass=ABCMeta):
         default = default if default == "" else f"{head}{default}"
         return f"{head}{dic[key]}" if key in dic else default
 
-    def set_set(self, data, head: str, default: ""):
+    def set_set(self, data, head: str, default=""):
         default = default if default == "" else f"{head}{default}"
         if data is List[str]:
             return [f"{head}{value}" for value in data]

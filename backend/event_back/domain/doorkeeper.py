@@ -4,7 +4,6 @@ import os
 from bs4 import BeautifulSoup
 import requests
 import datetime
-from model.bases import Bases
 from domain.searchbase import SearchBase
 import re
 
@@ -14,7 +13,7 @@ class Doorkeeper(SearchBase):
         self.__domain = "http://api.doorkeeper.jp/events/"
 
     def convert(self, data: Event):
-        if data.address:
+        if data.address and data.address[0]:
             tmp = [f"prefecture={value}" if value != "online" and value is str else ""
                    for value in data.address]
             address = "&" + \
@@ -37,26 +36,26 @@ class Doorkeeper(SearchBase):
         events: list = requests.get(url).json()
 
         tablelist: List[EventTable] = []
-        regex_year = re.compile(r'\d{4}-\d{2}-\d{2}')
-        regex_time = re.compile(r'\d{2}:\d{2}')
-        # print(events)
         for i, dic in enumerate(events):
-            res = dic["event"]
+            if not (i < limit):
+                break
+            res: dict = dic["event"]
             title = res["title"]
-            # day, time = str(res["starts_at"].split("T")[0]), str(res["starts_at"].split("T")[1])
             address = 'オンライン' if res["address"] is None else res["address"]
-            # group = res[""]
-            img = res["banner"]
+            img = res["banner"] if "banner" in res else ""
             link = res["public_url"]
             res = requests.get(link)
             soup = BeautifulSoup(res.text, "html.parser")
             info_date: str = soup.select_one('.community-event-info-date').text.strip()
-
-            day = regex_year.search(info_date).group(0)
-            time = regex_time.search(info_date).group(0)
+            day, time = self.get_date(info_date)
             group: str = soup.select_one('.community-header-info').select_one('.community-title').select_one('a').text
             tablelist.append(EventTable(
                 address=address, title=title, day=day, time=time, group=group, img=img, link=link))
-            if i >= limit:
-                break
         return tablelist
+
+    def get_date(self, date: str):
+        regex_year = re.compile(r'\d{4}-\d{2}-\d{2}')
+        regex_time = re.compile(r'\d{2}:\d{2}')
+        if not regex_year.search(date):
+            date = datetime.datetime.strptime(date.split("-")[0], '%a, %d %b %Y %H:%M ').strftime('%Y-%m-%d %H:%M')
+        return regex_year.search(date).group(0), regex_time.search(date).group(0)

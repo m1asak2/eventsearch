@@ -4,9 +4,7 @@
       <h4 class="eventHeader">イベントHit : {{ items.length }}件</h4>
     </template>
     <template v-else>
-      <h4 class="eventHeader">
-        イベントは見つかりませんでした
-      </h4>
+      <h4 class="eventHeader">&nbsp;</h4>
     </template>
     <table>
       <thead>

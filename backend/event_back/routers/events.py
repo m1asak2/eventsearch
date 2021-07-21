@@ -1,22 +1,18 @@
+from os import truncate
+from typing import List
 from fastapi import APIRouter
-from domain.connpass2 import Connpass
 from domain.Factory import Factory
-from model.event import Event
+from model.event import Event, EventTable
+from domain.eventSort import sort_date
+
 router = APIRouter()
 apipath = "/api/v01"
 
 
-@router.post(f"{apipath}/connpass")
-def get_connpass(data: Event):
-    com = Connpass()
-    return com.get_event(data)
-
-
 @router.post(f"{apipath}/event")
 def get_event(data: Event):
-    res = []
+    res: List[EventTable] = []
     for target in data.target:
         com = Factory(target).strategy
         res += com.get_event(data)
-
-    return res
+    return sort_date(res)[:data.limit]

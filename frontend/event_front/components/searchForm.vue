@@ -124,12 +124,13 @@ export default defineComponent({
     const state = reactive<stateBase>({
       targets: [],
       displayitem: {
-        keyword: 'aws google',
-        address: 'online osaka',
+        keyword: '',
+        address: '',
         limit: 10,
         start_from: '',
         period: '',
-        target: ['connpass', 'doorkeeper', 'techplay']
+        // target: ['connpass', 'doorkeeper', 'techplay']
+        target: ['connpass', 'doorkeeper']
       }
     })
     state.displayitem.start_from = getDate()

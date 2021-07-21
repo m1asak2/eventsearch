@@ -16,7 +16,7 @@
       </div>
       <search-form
         :items="state.displayItem"
-        @search="apiPostTrigger"
+        @search="search"
         @save="SaveCondition"
       >
       </search-form>
@@ -43,9 +43,11 @@ import SearchForm from '@/components/searchForm.vue'
 import { DisplayForm, SaveForm } from '@/types/interfaces'
 import card from '@/components/eventTable.vue'
 import EventCard from '@/components/EventCard.vue'
-import useSampleApi from '~/composition/useSampleApi'
-import { SaveToDisplayForm } from '~/composition/ConvertForm'
-
+// import useSampleApi from '~/composition/useSampleApi'
+import useEventApi from '~/composition/useEventApi'
+import { DisplayToSaveForm, SaveToDisplayForm } from '~/composition/ConvertForm'
+import local from '~/store/local'
+import { DisplayToSendForm } from '~/composition/ConvertDisplayForm'
 class EventItems {
   savedItem: SaveForm[] = []
   displayItem: DisplayForm = {
@@ -60,52 +62,64 @@ class EventItems {
 export default defineComponent({
   components: { SearchForm, card, EventCard },
 
-  setup(_props, { root }) {
-    const { $axios } = root
-    const { response, isLoading, apiPostTrigger } = useSampleApi($axios)
+  setup(_props) {
+    // const { $axios } = root
+    // const { response, isLoading, apiPostTrigger } = useSampleApi($axios)
+    const { response, isLoading, apiPostTrigger } = useEventApi()
+    const { load, save, remove } = local()
     const state = reactive(new EventItems())
-    const SetItems = () => {
-      state.savedItem.push({
-        keyword: 'javascript java',
-        address: 'online',
-        limit: 10,
-        period: '30',
-        target: ['connpass', 'doorkeeper']
-      })
-      state.savedItem.push({
-        keyword: 'flutter dart',
-        address: 'osaka',
-        limit: 50,
-        period: '10',
-        target: ['connpass']
-      })
-      state.savedItem.push({
-        keyword: 'vue.js nuxt',
-        address: 'tokyo',
-        limit: 20,
-        period: '20',
-        target: ['doorkeeper']
-      })
+    const LoadItems = () => {
+      // state.savedItem.push({
+      //   keyword: 'javascript java',
+      //   address: 'online',
+      //   limit: 10,
+      //   period: '30',
+      //   target: ['connpass', 'doorkeeper']
+      // })
+      // state.savedItem.push({
+      //   keyword: 'flutter dart',
+      //   address: 'osaka',
+      //   limit: 50,
+      //   period: '10',
+      //   target: ['connpass']
+      // })
+      // state.savedItem.push({
+      //   keyword: 'vue.js nuxt',
+      //   address: 'tokyo',
+      //   limit: 20,
+      //   period: '20',
+      //   target: ['doorkeeper']
+      // })
+      state.savedItem = load()
     }
     const setCondition = (i: number) => {
       state.displayItem = SaveToDisplayForm(state.savedItem[i])
     }
     const deleteCondition = (i: number) => {
-      state.savedItem.splice(i, 1)
+      // state.savedItem.splice(i, 1)
+      state.savedItem = remove(i)
     }
     const created = onBeforeMount(() => {
-      SetItems()
+      LoadItems()
     })
     const SaveCondition = (evt: DisplayForm) => {
-      state.savedItem.push(Object.assign({}, evt))
+      const saveItem = DisplayToSaveForm(evt)
+      state.savedItem = save(saveItem)
+      // load()
+      // state.savedItem.push(Object.assign({}, saveItem))
+    }
+    const search = (data: DisplayForm) => {
+      response.value = []
+      apiPostTrigger(data)
     }
     return {
       state,
+      search,
       onMounted,
       isLoading,
       response,
       apiPostTrigger,
-      SetItems,
+      LoadItems,
       setCondition,
       created,
       SaveCondition,
